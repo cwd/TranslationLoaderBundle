@@ -97,9 +97,12 @@ class TranslationHistorySubscriber implements EventSubscriber {
                 $historyEvent->setTranslation($entity->getTranslation());
                 $historyEvent->setUserAction($type);
                 $historyEvent->setUserName($userName);
+                $historyEvent->setDateOfChange(new \DateTime());
 
                 $entityManager->persist($historyEvent);
                 $entityManager->flush();
+                $entityManager->detach($historyEvent);
+                $entityManager->clear();
             }
         }
     }
