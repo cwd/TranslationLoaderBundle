@@ -1,24 +1,42 @@
 {% if translations %}
-<table class="translation-list">
-    <tr>
-        <th>{{ 'message_domain'|trans }}</th>
-        <th>{{ 'trans_key'|trans }}</th>
-        <th>{{ 'trans_locale'|trans }}</th>
-        <th>{{ 'translation'|trans }}</th>
-        <th>{{ 'date_created'|trans }}</th>
-        <th>{{ 'date_updated'|trans }}</th>
-    </tr>
-    {% for translation in translations %}
-    <tr>
-        <td>{{ translation.messageDomain }}</td>
-        <td>{{ translation.transKey }}</td>
-        <td>{{ translation.transLocale }}</td>
-        <td>{{ translation.translation }}</td>
-        <td>{{ translation.dateCreated.format('Y-m-d H:i:s') }}</td>
-        <td>{{ translation.dateUpdated.format('Y-m-d H:i:s') }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="table-responsive">
+    <table class="table table-hover table-condensed translation-list">
+        <thead>
+            <tr>
+                <th id="messageDomain">
+                    <a href="/admin/translations/sort/messageDomain" title="{{ 'messageDomain'|trans }}" data-query="messageDomain">{{ 'messageDomain'|trans }}</a>
+                </th>
+                <th id="transKey">
+                    <a href="/admin/translations/sort/transKey" title="{{ 'transKey'|trans }}" data-query="transKey">{{ 'transKey'|trans }}</a>
+                </th>
+                <th id="transLocale">
+                    <a href="/admin/translations/sort/transLocale" title="{{ 'transLocale'|trans }}" data-query="transLocale">{{ 'transLocale'|trans }}</a>
+                </th>
+                <th id="translation">
+                    <a href="/admin/translations/sort/translation" title="{{ 'translation'|trans }}" data-query="translation">{{ 'translation'|trans }}</a>
+                </th>
+                <th id="dateCreated">
+                    <a href="/admin/translations/sort/dateCreated" title="{{ 'dateCreated'|trans }}" data-query="dateCreated">{{ 'dateCreated'|trans }}</a>
+                </th>
+                <th id="dateUpdated">
+                    <a href="/admin/translations/sort/dateUpdated" title="{{ 'dateUpdated'|trans }}" data-query="dateUpdated">{{ 'dateUpdated'|trans }}</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for translation in translations %}
+            <tr data-locale="{{ translation.transLocale }}" data-domain="{{ translation.messageDomain }}" data-key="{{ translation.transKey }}">
+                <td>{{ translation.messageDomain }}</td>
+                <td>{{ translation.transKey }}</td>
+                <td>{{ translation.transLocale }}</td>
+                <td>{{ translation.translation }}</td>
+                <td>{{ translation.dateCreated.format('Y-m-d H:i:s') }}</td>
+                <td>{{ translation.dateUpdated.format('Y-m-d H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 <p>{{ 'translations' }}: {{ translations|length }}</p>
 {% else %}
 <h3>{{ 'no.table.data.yet'|trans }}</h3>
