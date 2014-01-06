@@ -25,7 +25,7 @@
         </thead>
         <tbody>
         {% for translation in translations %}
-            <tr>
+            <tr data-locale="{{ translation.transLocale }}" data-domain="{{ translation.messageDomain }}" data-key="{{ translation.transKey }}">
                 <td>{{ translation.messageDomain }}</td>
                 <td>{{ translation.transKey }}</td>
                 <td>{{ translation.transLocale }}</td>
