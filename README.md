@@ -40,19 +40,13 @@ asm_translation_loader:
 ###History & permissions
 If you have users maintaining your translations, you might want to restict specific groups to specific actions.
 Therefore a simple pre create/read/update/delete check (listener) is implemented, which throws according excpetions.
-Also, if enabled, for each CRUD operation done on a translation entity via doctrine, a event subsciber adds a new line to a history table, referring to the currently logged-in user. It logs datetime and before/after value of the translation itself.
+Also, if enabled, for each create, update or delete operation done on a translation entity via doctrine, a event subsciber adds a new line to a history table, referring to the currently logged-in user. It logs datetime and before/after value of the translation itself.
 
 ```yml
 asm_translation_loader:
     history:
         enabled: false # default: false
-    roles:
-        create: [ ROLE_ADMIN ]
-        read:   [ ROLE_ADMIN ]
-        update: [ ROLE_ADMIN ]
-        delete: [ ROLE_ADMIN ]
 ```
-When added, the node "roles" needs at least one role set for each operation.
 
 ###Setup the translation table
 ```sh
