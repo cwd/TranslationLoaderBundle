@@ -28,24 +28,92 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('database')
-                    ->children()
-                        ->scalarNode('entity_manager')
-                            ->defaultValue('default')
-                            ->info('Optional entity manager for separate translations handling.')
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('history')
-                    ->canBeEnabled()
-                    ->children()
-                            ->booleanNode('enabled')
-                            ->defaultFalse()
-                            ->info('Enables historytracking for translation changes. Uses user id from registered users as reference')
-                        ->end()
-                    ->end()
-                ->end()
+                ->append($this->addLoaderNode())
+                ->append($this->addTranslationsNode())
+                ->append($this->addDatabaseNode())
+                ->append($this->addHistoryNode())
             ->end();
         return $treeBuilder;
+    }
+
+
+    /**
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    private function addLoaderNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('loader');
+
+        $node
+            ->canBeEnabled()
+            ->children()
+                ->booleanNode('enabled')
+                    ->defaultFalse()
+                    ->info('Enables database loader')
+                ->end()
+            ->end();
+
+        return $node;
+    }
+
+
+    /**
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    private function addTranslationsNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('translations');
+
+        $node
+            ->requiresAtLeastOneElement()
+            ->prototype('array')
+                ->prototype('scalar')->end()
+                ->children()->end()
+            ->end();
+
+        return $node;
+    }
+
+
+    /**
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    private function addDatabaseNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('database');
+
+        $node
+            ->children()
+                ->scalarNode('entity_manager')
+                    ->defaultValue('default')
+                    ->info('Optional entity manager for separate translations handling.')
+                ->end()
+            ->end();
+
+        return $node;
+    }
+
+
+    /**
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    private function addHistoryNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('history');
+
+        $node
+            ->canBeEnabled()
+            ->children()
+                ->booleanNode('enabled')
+                    ->defaultFalse()
+                    ->info('Enables historytracking for translation changes. Uses user id from registered users as reference')
+                ->end()
+            ->end();
+
+        return $node;
     }
 }

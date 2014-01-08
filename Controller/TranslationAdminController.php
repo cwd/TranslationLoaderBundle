@@ -47,6 +47,9 @@ class TranslationAdminController extends Controller
     }
 
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function createAction()
     {
         return $this->render(
@@ -56,6 +59,9 @@ class TranslationAdminController extends Controller
     }
 
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function editAction()
     {
         return $this->render(
@@ -65,6 +71,9 @@ class TranslationAdminController extends Controller
     }
 
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function deleteAction()
     {
         return $this->render(
