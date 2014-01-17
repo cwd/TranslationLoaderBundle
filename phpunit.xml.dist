@@ -11,6 +11,9 @@
          syntaxCheck="false"
          bootstrap="./vendor/autoload.php"
         >
+    <php>
+        <server name="KERNEL_DIR" value="Tests/App" />
+    </php>
     <testsuites>
         <testsuite name="TranslationLoaderBundle testsuite">
             <directory suffix="Test.php">./Tests</directory>
@@ -21,11 +24,10 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
+                <directory>./Entity</directory>
                 <directory>./Resources</directory>
                 <directory>./Tests</directory>
                 <directory>./TestCase</directory>
-                <directory>./Repository</directory>
-                <directory>./Entity</directory>
                 <directory>./vendor</directory>
             </exclude>
         </whitelist>

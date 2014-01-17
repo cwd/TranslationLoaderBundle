@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -32,22 +33,6 @@ class AsmTranslationLoaderExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        // check if bundle is enabled
-        $translationLoader = false;
-        if (isset($config['loader']['enabled'])
-            && true == $config['loader']['enabled']
-        ) {
-            $translationLoader = $config['loader']['enabled'];
-        }
-
-        // see if there are configured locales/domains
-        $translations = array();
-        if (isset($config['translations'])
-            && !empty($config['translations'])
-        ) {
-            $translations = $config['translations'];
-        }
-
         // set entity manager for translations
         $em = 'default';
         if (isset($config['database']['entity_manager'])
@@ -64,9 +49,15 @@ class AsmTranslationLoaderExtension extends Extension
             $historyEnabled = $config['history']['enabled'];
         }
 
-        $container->setParameter('asm_translation_loader.loader.enabled', $translationLoader);
         $container->setParameter('asm_translation_loader.database.entity_manager', $em);
         $container->setParameter('asm_translation_loader.history.enabled', $historyEnabled);
-        $container->setParameter('asm_translation_loader.translations', $translations);
+
+        $loader = new XmlFileLoader(
+            $container,
+            new FileLocator(__DIR__.'/../Resources/config')
+        );
+        if ('orm' == $config['driver']) {
+            $loader->load('orm.xml');
+        }
     }
 }

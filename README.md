@@ -1,7 +1,11 @@
 TranslationLoaderBundle
 =========
 
-TranslationLoaderBundle allows you to do several cool things with your symfony standart edition translations. It relies mostly on the Translator component and doctrine.
+[![Build Status](https://travis-ci.org/maschmann/TranslationLoaderBundle.png?branch=master)](https://travis-ci.org/maschmann/TranslationLoaderBundle) [![Latest Stable Version](https://poser.pugx.org/asm/translation-loader-bundle/v/stable.png)](https://packagist.org/packages/asm/translation-loader-bundle) [![Total Downloads](https://poser.pugx.org/asm/translation-loader-bundle/downloads.png)](https://packagist.org/packages/asm/translation-loader-bundle)
+
+[![knpbundles.com](http://knpbundles.com/maschmann/TranslationLoaderBundle/badge-short)](http://knpbundles.com/maschmann/TranslationLoaderBundle)
+
+TranslationLoaderBundle allows you to do several cool things with your symfony standard edition translations. It relies mostly on the Translator component and doctrine.
 So you can...
   - import all your bundle's translations (if they are in the default path)
   - export all translations in your preferred format
@@ -12,7 +16,7 @@ Installation
 
 Add requirement to your composer.json
 ```php
-"asm/translation-loader-bundle": "dev-master"
+"asm/translation-loader-bundle": "~1.0"
 ```
 Update via composer and register the bundle.
 ```php
@@ -100,7 +104,7 @@ I'd be happy if you like the bundle and help me take it to the next level and/or
 License
 ----
 
-MIT
+AsmTranslationLoaderBundle is licensed under the MIT license. See the [LICENSE](Resources/meta/LICENSE) for the full license text.
 
 
 **Free Software, Hell Yeah!**
