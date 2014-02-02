@@ -20,17 +20,12 @@ use Asm\TranslationLoaderBundle\DependencyInjection\Compiler\TranslationLoaderPa
 class AsmTranslationLoaderBundle extends Bundle
 {
     /**
-     * @param ContainerBuilder $container
+     * {@inheritDoc}
      */
-/*    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container)
     {
         parent::build($container);
-        $configs = $container->getExtensionConfig('asm_translation_loader');
-        print_r($configs);
-        // if our translations are enabled
-        if (true == $container->getParameter('asm_translation_loader.loader.enabled', false))
-        {
-            $container->addCompilerPass(new TranslationLoaderPass());
-        }
-    }*/
+
+        $container->addCompilerPass(new AddResourcePass());
+    }
 }

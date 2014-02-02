@@ -56,8 +56,29 @@ class AsmTranslationLoaderExtension extends Extension
             $container,
             new FileLocator(__DIR__.'/../Resources/config')
         );
+
+        // load the translation manager resource
+        $container->setParameter('asm_translation_loader.resources', $config['resources']);
+        $loader->load('translation_manager_resource.xml');
+
         if ('orm' == $config['driver']) {
             $loader->load('orm.xml');
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNamespace()
+    {
+        return 'https://github.com/maschmann/TranslationLoaderBundle/schema/dic';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getXsdValidationBasePath()
+    {
+        return __DIR__.'/../Resources/config/schema';
     }
 }
