@@ -22,6 +22,9 @@ class TranslationAdminController extends Controller
      */
     public function showAction($domain=null, $locale=null)
     {
+        //$page = $this->getRequest()->query->get("page", 1) ;
+        //$qb ->setFirstResult( ( $page-1 ) * $limit)->setMaxResults($limit) ;
+
         $repository = $this->get('doctrine')
             ->getManager($this->container->getParameter('asm_translation_loader.database.entity_manager'))
             ->getRepository('AsmTranslationLoaderBundle:Translation');
