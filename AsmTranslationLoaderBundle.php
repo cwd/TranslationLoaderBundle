@@ -1,4 +1,13 @@
 <?php
+/*
+ * This file is part of the AsmTranslationLoaderBundle package.
+ *
+ * (c) Marc Aschmann <maschmann@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * @namespace Asm\TranslationLoaderBundle
  */
@@ -6,7 +15,7 @@ namespace Asm\TranslationLoaderBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Asm\TranslationLoaderBundle\DependencyInjection\Compiler\TranslationLoaderPass;
+use Asm\TranslationLoaderBundle\DependencyInjection\Compiler\AddResourcePass;
 
 /**
  * Class AsmTranslationLoaderBundle
