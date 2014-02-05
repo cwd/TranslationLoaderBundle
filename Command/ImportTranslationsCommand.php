@@ -109,7 +109,7 @@ class ImportTranslationsCommand extends BaseTranslationCommand
         $supportedFormats  = $translationWriter->getFormats();
 
         // iterate all bundles and get their translations
-        foreach (array_keys($this->container->getParameter('kernel.bundles')) as $bundle) {
+        foreach (array_keys($this->getContainer()->getParameter('kernel.bundles')) as $bundle) {
             $currentBundle   = $this->getKernel()->getBundle($bundle);
             $translationPath = $currentBundle->getPath().'/Resources/translations';
 
@@ -125,7 +125,6 @@ class ImportTranslationsCommand extends BaseTranslationCommand
 
                 foreach ($files as $file) {
                     /** @var SplFileInfo $file */
-
                     $extension = explode('.', $file->getFilename());
                     // domain.locale.extension
                     if (3 == count($extension)) {
@@ -140,7 +139,7 @@ class ImportTranslationsCommand extends BaseTranslationCommand
 
                             if (empty($this->loaders[$fileExtension])) {
                                 try {
-                                    $this->loaders[$fileExtension] = $this->container->get('translation.loader.' . $fileExtension);
+                                    $this->loaders[$fileExtension] = $this->getContainer()->get('translation.loader.' . $fileExtension);
                                 } catch (\Exception $e) {
                                     throw new \ErrorException('could not find loader for ' . $fileExtension . ' files!');
                                 }
@@ -175,7 +174,7 @@ class ImportTranslationsCommand extends BaseTranslationCommand
             $output->write('<comment>' . $locale . ': </comment>');
             foreach ($catalogue->getDomains() as $domain) {
                 foreach ($catalogue->all($domain) as $key => $message) {
-                    if ('' !== $key) {
+                    if ('' !== $key && !empty($message)) {
                         $translation = $translationManager->findTranslationBy(
                             array(
                                 'transKey'      => $key,
@@ -186,16 +185,18 @@ class ImportTranslationsCommand extends BaseTranslationCommand
 
                         // insert if no entry exists
                         if (!$translation) {
+                            // create a new translation if no entry does exist yet
                             $translation = $translationManager->createTranslation();
                             $translation->setTransKey($key);
                             $translation->setTransLocale($locale);
                             $translation->setMessageDomain($domain);
+                            $translation->setTranslation($message);
+                            $translationManager->updateTranslation($translation);
+                        } elseif ($translation->getTranslation() != $message) {
+                            // update only if we've got a changed message
+                            $translation->setTranslation($message);
+                            $translationManager->updateTranslation($translation);
                         }
-
-                        // and in either case we want to add a message :-)
-                        $translation->setTranslation($message);
-
-                        $translationManager->updateTranslation($translation);
                     }
                 }
                 $output->write('<info> ... ' . $domain . '.' . $locale . '</info>');

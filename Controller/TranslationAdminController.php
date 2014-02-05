@@ -2,7 +2,9 @@
 
 namespace Asm\TranslationLoaderBundle\Controller;
 
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Class TranslationAdminController
@@ -22,12 +24,9 @@ class TranslationAdminController extends Controller
      */
     public function showAction($domain=null, $locale=null)
     {
-        //$page = $this->getRequest()->query->get("page", 1) ;
-        //$qb ->setFirstResult( ( $page-1 ) * $limit)->setMaxResults($limit) ;
 
-        $repository = $this->get('doctrine')
-            ->getManager($this->container->getParameter('asm_translation_loader.database.entity_manager'))
-            ->getRepository('AsmTranslationLoaderBundle:Translation');
+        /** @var \Asm\TranslationLoaderBundle\Doctrine\TranslationManager $repository */
+        $repository = $this->get('asm_translation_loader.translation_manager');
 
         if (!empty($locale) || !empty($domain)) {
             if ($locale) {
@@ -36,9 +35,9 @@ class TranslationAdminController extends Controller
             if ($domain) {
                 $params['messageDomain'] = $domain;
             }
-            $translations = $repository->findBy($params);
+            $translations = $repository->findTranslationBy($params);
         } else {
-            $translations = $repository->findAll();
+            $translations = $repository->findAllTranslations();
         }
 
         return $this->render(
@@ -83,5 +82,26 @@ class TranslationAdminController extends Controller
             'AsmTranslationLoaderBundle:TranslationAdmin:delete.html.twig',
             array()
         );
+    }
+
+
+    /**
+     * generate paging
+     *
+     * @param QueryBuilder $qb
+     * @param int $limit
+     * @return Paginator
+     */
+    private function getPaginator($limit=30)
+    {
+        $page = $this->get('request_stack')
+            ->getCurrentRequest()
+            ->query
+            ->get("page", 1) ;
+
+        $qb = $this->getDoctrine()->
+        $qb ->setFirstResult( ( $page-1 ) * $limit)->setMaxResults($limit);
+        //$this->getContainer()->get('asm_translation_loader.translation_manager')
+        return new Paginator($qb);
     }
 }

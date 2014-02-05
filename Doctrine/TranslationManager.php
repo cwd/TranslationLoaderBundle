@@ -80,4 +80,9 @@ class TranslationManager extends BaseTranslationManager
         $this->objectManager->remove($translation);
         $this->objectManager->flush();
     }
+
+    public function createQueryBuilder()
+    {
+        return $this->objectManager->createQueryBuilder();
+    }
 }
